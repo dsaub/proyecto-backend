@@ -22,7 +22,7 @@ public class ProyectoBackendApplication {
     public CommandLineRunner initUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             System.out.println("Creando usuario...");
-            if (userRepository.findByUsername("admin").isEmpty()) {
+            if (userRepository.findByUsername("admin") == null) {
                 User admin = User.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin123"))
