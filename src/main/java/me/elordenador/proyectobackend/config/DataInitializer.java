@@ -13,6 +13,7 @@ public class DataInitializer {
     @Bean
     CommandLineRunner init(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
+            System.out.println("Creando usuario...");
             if (userRepository.findByUsername("admin").isEmpty()) {
                 User admin = User.builder()
                         .username("admin")
