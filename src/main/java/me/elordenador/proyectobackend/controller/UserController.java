@@ -1,5 +1,9 @@
 package me.elordenador.proyectobackend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import me.elordenador.proyectobackend.Enums.UserRole;
 import me.elordenador.proyectobackend.dto.UserDTO;
@@ -8,6 +12,7 @@ import me.elordenador.proyectobackend.exceptions.LoginInvalid;
 import me.elordenador.proyectobackend.models.User;
 import me.elordenador.proyectobackend.service.UserService;
 import me.elordenador.proyectobackend.utils.JwtUtil;
+import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,11 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+
+
+    class StringJson {
+        public String respuesta;
+    }
     private final UserService userService;
 
     /**
@@ -31,7 +41,7 @@ public class UserController {
      * @return 200 with the token as a String if authentication details are valid, 404 if not.
      */
     @PostMapping("/login")
-    public ResponseEntity<String> getToken(@RequestBody UserPasswordDTO dto) {
+    public ResponseEntity<StringJson> getToken(@RequestBody UserPasswordDTO dto) {
         String username = dto.getUsername();
         String password = dto.getPassword();
         System.out.println("Logging in as " + username + "...");
@@ -41,9 +51,10 @@ public class UserController {
         } catch (LoginInvalid e) {
             return ResponseEntity.notFound().build();
         }
+        StringJson json = new StringJson();
+        json.respuesta = token;
 
-
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(json);
     }
 
     /**
@@ -67,13 +78,18 @@ public class UserController {
      * @param token Authorization header for user, must be a valid JWT token for this to work.
      * @return User object.
      */
+    @Operation(summary = "Obtiene la información del usuario a partir de su token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "El token es valido"),
+            @ApiResponse(responseCode = "401", description = "El token no se ha enviado o es invalido", content = @Content)
+    })
     @GetMapping("/me")
     public ResponseEntity<UserDTO> aboutMe(@RequestHeader("Authorization") String token) {
 
 
         token = verifyAuthFormat(token);
         if (token == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         if (JwtUtil.validateToken(token)) {
@@ -90,6 +106,7 @@ public class UserController {
      * @param token Bearer (token) -- Authorization header.
      * @return 406 if token format is invalid or not provided, 401 if token invalid, 403 if token is valid but user is not admin and 200 with all users when admin valid token is provided
      */
+    @Operation
     @GetMapping()
     public ResponseEntity<List<UserDTO>> getAll(@RequestHeader("Authorization") String token) {
         token = verifyAuthFormat(token);
