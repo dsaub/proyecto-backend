@@ -12,10 +12,10 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Product getById(Long id) {
-        return productRepository.findById(id).orElseThrow();
+        return productRepository.findById(id).orElse(null);
     }
     public Product getByName(String name) {
-        return productRepository.findByName(name).orElseThrow();
+        return productRepository.findByName(name).orElse(null);
     }
     public void store(Product product) {
         productRepository.save(product);
