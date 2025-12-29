@@ -14,4 +14,10 @@ public class ProductService {
     public Product getById(Long id) {
         return productRepository.findById(id).orElseThrow();
     }
+    public Product getByName(String name) {
+        return productRepository.findByName(name).orElseThrow();
+    }
+    public void store(Product product) {
+        productRepository.save(product);
+    }
 }
