@@ -23,7 +23,7 @@ public class CategoryService{
     }
 
     public Category getParentCategory(Category category) {
-        return categoryRepository.findCategoryByParent(category).orElse(null);
+        return category.getParent();
     }
     public List<CategoryDTO> getAll() {
         ArrayList<CategoryDTO> dtos = new ArrayList<>();
