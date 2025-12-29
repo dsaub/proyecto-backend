@@ -1,11 +1,11 @@
-FROM alpine:3.22 AS builder
+FROM alpine:edge AS builder
 WORKDIR /build
 ADD . .
 
 RUN apk add openjdk25-jdk maven
 RUN mvn clean compile package -DskipTests
 
-FROM alpine:3.22.2 AS runtime
+FROM alpine:edge AS runtime
 WORKDIR /app
 RUN apk update
 RUN apk upgrade --no-cache busybox
