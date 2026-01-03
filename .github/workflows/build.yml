@@ -40,7 +40,7 @@ jobs:
           SPRING_DIALECT: org.hibernate.dialect.MariaDBDialect
           API_URL: http://localhost:8080
           SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
-          UPLOADS_FOLDER: /uploads
+          UPLOADS_FOLDER: /tmp/uploads
         run: ./mvnw clean verify
   build:
     runs-on: ubuntu-latest
