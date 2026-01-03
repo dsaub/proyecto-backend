@@ -1,6 +1,7 @@
 package me.elordenador.proyectobackend.service;
 
 import me.elordenador.proyectobackend.models.Image;
+import me.elordenador.proyectobackend.models.User;
 import me.elordenador.proyectobackend.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,7 @@ public class ImageService {
         }
     }
 
-    public Image upload(MultipartFile file) {
+    public Image upload(User owner, MultipartFile file) {
         if (file.isEmpty()) {
             throw new RuntimeException("No se puede guardar un archivo vacio.");
 
@@ -51,6 +52,7 @@ public class ImageService {
             image.setFileName(uniqueFileName);
             image.setOriginalName(originalName);
             image.setMimeType(file.getContentType());
+            image.setOwner(owner);
 
             return imageRepository.save(image);
         } catch (IOException e) {
