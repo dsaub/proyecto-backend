@@ -17,4 +17,8 @@ public class Image {
     private String fileName;
     private String mimeType;
 
+    @ManyToOne
+    private User owner;
+
+
 }
