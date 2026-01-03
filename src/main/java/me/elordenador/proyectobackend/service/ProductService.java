@@ -1,5 +1,6 @@
 package me.elordenador.proyectobackend.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -20,4 +21,6 @@ public class ProductService {
     public void store(Product product) {
         productRepository.save(product);
     }
+
+
 }
