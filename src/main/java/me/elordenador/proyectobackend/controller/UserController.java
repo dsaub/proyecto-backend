@@ -62,7 +62,7 @@ public class UserController {
      * @param token Authorization header (Bearer (token))
      * @return null if invalid or the token itself if valid
      */
-    public String verifyAuthFormat(String token) {
+    public static String verifyAuthFormat(String token) {
         if (token == null) {
             return null;
         }
