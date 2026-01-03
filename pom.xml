@@ -96,7 +96,6 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <scope>runtime</scope>
-            <version>3.5.7</version>
         </dependency>
 
     </dependencies>
