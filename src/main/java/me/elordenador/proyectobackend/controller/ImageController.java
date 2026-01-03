@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import me.elordenador.proyectobackend.dto.ImageDTO;
 import me.elordenador.proyectobackend.dto.UserDTO;
 import me.elordenador.proyectobackend.models.Image;
 import me.elordenador.proyectobackend.models.User;
@@ -38,7 +39,7 @@ public class ImageController {
                 )
         }
     )
-    public ResponseEntity<Image> uploadImage(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<ImageDTO> uploadImage(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token) {
         token = UserController.verifyAuthFormat(token);
         if (token == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -48,7 +49,7 @@ public class ImageController {
             String username = JwtUtil.getSubjectFromToken(token);
             User user = userService.getByUsername(username);
             Image savedImage = imageService.upload(user, file);
-            return new ResponseEntity<>(savedImage, HttpStatus.CREATED);
+            return new ResponseEntity<>(new ImageDTO(savedImage), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
